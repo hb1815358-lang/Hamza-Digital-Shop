@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hamza Digital Shop — Website & Extension Development</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep: #101c33;
+    --navy: #1c2f52;
+    --steel: #35558c;
+    --gold: #c9a24b;
+    --gold-soft: #e4c983;
+    --cream: #f4f1ea;
+    --paper: #fbfaf6;
+    --ink: #1a2233;
+    --ink-soft: #56607a;
+    --jazz: #cc0e2d;
+    --easy: #0a8a3f;
+    --line: rgba(16,28,51,0.12);
+    --radius: 10px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Manrope', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Zilla Slab', serif;
+    letter-spacing:-0.01em;
+  }
+  .mono{font-family:'JetBrains Mono', monospace;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+
+  /* subtle badge/seal pattern backdrop */
+  .seal-bg{
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1.4px, transparent 0);
+    background-size: 26px 26px;
+  }
+
+  /* ===== NAV ===== */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(16,28,51,0.94);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(201,162,75,0.25);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px; max-width:1120px; margin:0 auto;
+  }
+  .brand{
+    display:flex; align-items:center; gap:12px;
+    color:var(--paper);
+  }
+  .badge-mark{
+    width:38px; height:38px; border-radius:50%;
+    background:linear-gradient(160deg, var(--gold-soft), var(--gold) 60%, #9c7a30);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Zilla Slab', serif; font-weight:700; color:var(--navy-deep);
+    font-size:16px;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.35);
+  }
+  .brand-text{display:flex; flex-direction:column; line-height:1.15;}
+  .brand-text strong{font-family:'Zilla Slab', serif; font-size:16px; font-weight:700;}
+  .brand-text span{font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-soft);}
+  .nav-links{display:flex; gap:28px; align-items:center;}
+  .nav-links a{
+    color:rgba(251,250,246,0.82); font-size:14.5px; font-weight:500;
+    transition:color .2s;
+  }
+  .nav-links a:hover{color:var(--gold-soft);}
+  .nav-cta{
+    background:var(--gold); color:var(--navy-deep);
+    padding:9px 18px; border-radius:999px; font-weight:700; font-size:14px;
+  }
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  /* ===== HERO ===== */
+  .hero{
+    background: linear-gradient(180deg, var(--navy-deep), var(--navy) 70%);
+    color:var(--paper);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1.3px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events:none;
+  }
+  .hero-inner{
+    position:relative; z-index:1;
+    padding:88px 28px 76px;
+    max-width:1120px; margin:0 auto;
+    display:grid; grid-template-columns:1.15fr 0.85fr; gap:50px; align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12.5px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--gold-soft); font-weight:700;
+    border:1px solid rgba(201,162,75,0.4);
+    padding:6px 14px; border-radius:999px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{content:"●"; color:var(--gold); font-size:8px;}
+  .hero h1{
+    font-size:clamp(34px, 4.6vw, 54px);
+    font-weight:700; line-height:1.08;
+    margin-bottom:20px;
+  }
+  .hero h1 em{font-style:normal; color:var(--gold-soft);}
+  .hero p.lead{
+    font-size:17px; color:rgba(251,250,246,0.78); max-width:52ch; margin-bottom:32px;
+  }
+  .hero-actions{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 24px; border-radius:8px;
+    font-weight:700; font-size:14.5px;
+    border:1px solid transparent; cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-gold{background:var(--gold); color:var(--navy-deep);}
+  .btn-gold:hover{box-shadow:0 8px 20px rgba(201,162,75,0.35);}
+  .btn-ghost{border-color:rgba(251,250,246,0.35); color:var(--paper);}
+  .btn-ghost:hover{background:rgba(251,250,246,0.08);}
+
+  .id-card{
+    background:var(--paper); color:var(--ink);
+    border-radius:14px; padding:26px;
+    box-shadow:0 30px 60px rgba(0,0,0,0.35);
+    border:1px solid rgba(201,162,75,0.4);
+    position:relative;
+  }
+  .id-card::before{
+    content:"CERTIFIED DEVELOPER";
+    position:absolute; top:-11px; left:24px;
+    background:var(--gold); color:var(--navy-deep);
+    font-size:10.5px; font-weight:800; letter-spacing:0.08em;
+    padding:4px 12px; border-radius:999px;
+  }
+  .id-row{display:flex; align-items:center; gap:16px; margin-bottom:18px; padding-bottom:18px; border-bottom:1px dashed var(--line);}
+  .id-avatar{
+    width:56px; height:56px; border-radius:50%;
+    background:linear-gradient(160deg, var(--steel), var(--navy));
+    display:flex; align-items:center; justify-content:center;
+    color:var(--gold-soft); font-family:'Zilla Slab',serif; font-weight:700; font-size:20px;
+  }
+  .id-name{font-family:'Zilla Slab', serif; font-weight:700; font-size:18px;}
+  .id-role{font-size:12.5px; color:var(--ink-soft);}
+  .id-stats{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .id-stat b{display:block; font-family:'Zilla Slab', serif; font-size:22px; color:var(--navy);}
+  .id-stat span{font-size:11.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.05em;}
+  @media (max-width:860px){ .hero-inner{grid-template-columns:1fr;} }
+
+  /* ===== SECTION GENERIC ===== */
+  section{padding:78px 0;}
+  .section-head{max-width:640px; margin-bottom:44px;}
+  .kicker{
+    font-size:12.5px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--steel); margin-bottom:10px; display:block;
+  }
+  .section-head h2{font-size:clamp(26px,3.2vw,36px); color:var(--navy-deep);}
+  .section-head p{color:var(--ink-soft); margin-top:12px; font-size:15.5px;}
+
+  /* ABOUT */
+  .about{background:var(--paper);}
+  .about-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:center;}
+  .about-photo{
+    aspect-ratio:4/5; border-radius:12px;
+    background:linear-gradient(150deg, var(--navy), var(--steel));
+    display:flex; align-items:center; justify-content:center;
+    color:rgba(251,250,246,0.5); font-size:13px;
+    border:6px solid var(--paper); box-shadow:0 0 0 1px var(--line), 0 20px 40px rgba(16,28,51,0.15);
+  }
+  .about-text p{color:var(--ink-soft); margin-bottom:16px; font-size:15.5px;}
+  .skill-tags{display:flex; flex-wrap:wrap; gap:9px; margin-top:20px;}
+  .skill-tags span{
+    font-size:12.5px; font-weight:600; padding:7px 13px;
+    background:var(--cream); border:1px solid var(--line); border-radius:999px; color:var(--navy);
+  }
+  @media (max-width:860px){ .about-grid{grid-template-columns:1fr;} }
+
+  /* SERVICES */
+  .services-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:22px;}
+  .service-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    padding:28px 24px; position:relative; overflow:hidden;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .service-card:hover{transform:translateY(-4px); box-shadow:0 16px 30px rgba(16,28,51,0.1);}
+  .service-card .num{
+    font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--gold);
+    background:var(--navy-deep); display:inline-block; padding:4px 9px; border-radius:5px; margin-bottom:16px;
+  }
+  .service-card h3{font-size:19px; color:var(--navy-deep); margin-bottom:10px;}
+  .service-card p{color:var(--ink-soft); font-size:14.5px; margin-bottom:16px;}
+  .price-tag{font-family:'JetBrains Mono', monospace; font-weight:700; color:var(--steel); font-size:15px;}
+  .price-tag span{color:var(--ink-soft); font-weight:400; font-size:12.5px;}
+  @media (max-width:860px){ .services-grid{grid-template-columns:1fr;} }
+
+  /* ORDER / CHECKOUT */
+  .order-section{background:var(--navy-deep); color:var(--paper);}
+  .order-section .kicker{color:var(--gold-soft);}
+  .order-section .section-head h2{color:var(--paper);}
+  .order-section .section-head p{color:rgba(251,250,246,0.65);}
+  .order-grid{display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start;}
+  .receipt{
+    background:var(--paper); color:var(--ink); border-radius:14px; padding:0; overflow:hidden;
+    box-shadow:0 30px 60px rgba(0,0,0,0.35);
+  }
+  .receipt-head{
+    background:repeating-linear-gradient(135deg, var(--navy), var(--navy) 10px, var(--steel) 10px, var(--steel) 20px);
+    padding:16px 22px; color:var(--paper); display:flex; justify-content:space-between; align-items:center;
+  }
+  .receipt-head span{font-family:'JetBrains Mono', monospace; font-size:12px;}
+  .receipt-body{padding:22px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:12.5px; font-weight:700; color:var(--navy); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.04em;}
+  .field input, .field select, .field textarea{
+    width:100%; padding:11px 13px; border:1px solid var(--line); border-radius:7px;
+    font-family:'Manrope', sans-serif; font-size:14.5px; background:var(--cream); color:var(--ink);
+  }
+  .field textarea{resize:vertical; min-height:70px;}
+  .field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--steel); outline-offset:1px;}
+
+  .pay-tabs{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;}
+  .pay-tab{
+    flex:1; min-width:100px; text-align:center; padding:10px 8px; border-radius:7px;
+    border:1.5px solid var(--line); font-size:12.5px; font-weight:700; cursor:pointer; color:var(--ink-soft);
+    background:var(--paper);
+  }
+  .pay-tab.active{border-color:var(--steel); color:var(--navy); background:#eef2f8;}
+  .pay-panel{display:none; background:var(--cream); border-radius:8px; padding:16px; font-size:13.5px; color:var(--ink-soft); border:1px dashed var(--line);}
+  .pay-panel.active{display:block;}
+  .pay-panel b{color:var(--navy); font-family:'JetBrains Mono', monospace;}
+  .submit-btn{
+    width:100%; background:var(--gold); color:var(--navy-deep); border:none;
+    padding:14px; border-radius:8px; font-weight:800; font-size:15px; cursor:pointer; margin-top:6px;
+    transition:transform .15s ease;
+  }
+  .submit-btn:hover{transform:translateY(-1px);}
+  .confirm-box{
+    display:none; background:#eafaf0; border:1px solid #b7e6c8; color:#175a34;
+    padding:14px 16px; border-radius:8px; font-size:13.5px; margin-top:14px; line-height:1.55;
+  }
+  .confirm-box.show{display:block;}
+
+  .order-notes{}
+  .order-notes ul{list-style:none; margin-top:18px;}
+  .order-notes li{
+    display:flex; gap:12px; padding:16px 0; border-bottom:1px solid rgba(251,250,246,0.12);
+  }
+  .order-notes li .n{
+    font-family:'JetBrains Mono', monospace; color:var(--gold); font-weight:700; font-size:14px; flex-shrink:0;
+  }
+  .order-notes li p{color:rgba(251,250,246,0.72); font-size:14.5px;}
+  @media (max-width:900px){ .order-grid{grid-template-columns:1fr;} }
+
+  /* FOOTER */
+  footer{background:var(--navy-deep); color:rgba(251,250,246,0.6); padding:40px 0 26px; border-top:1px solid rgba(201,162,75,0.2);}
+  .foot-grid{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;}
+  .foot-contact{display:flex; gap:22px; flex-wrap:wrap; font-size:14px;}
+  .foot-contact a{color:rgba(251,250,246,0.85); font-weight:600;}
+  .foot-bottom{text-align:center; font-size:12.5px; margin-top:26px; color:rgba(251,250,246,0.35);}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="brand">
+      <div class="badge-mark">HD</div>
+      <div class="brand-text">
+        <strong>Hamza Digital Shop</strong>
+        <span>Web &amp; Extension Studio</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#order">Hire / Order</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#order" class="nav-cta">Hire Now</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">Islamabad · Verified Developer</span>
+      <h1>Websites and browser extensions, <em>built to be trusted.</em></h1>
+      <p class="lead">Hamza Digital Shop designs responsive websites, browser extensions, and apps for clients who want quality work delivered on time — with clear pricing and secure payment options.</p>
+      <div class="hero-actions">
+        <a href="#order" class="btn btn-gold">Start an Order →</a>
+        <a href="#services" class="btn btn-ghost">View Services</a>
+      </div>
+    </div>
+    <div class="id-card">
+      <div class="id-row">
+        <div class="id-avatar">H</div>
+        <div>
+          <div class="id-name">Hamza</div>
+          <div class="id-role">Website &amp; Browser Extension Developer</div>
+        </div>
+      </div>
+      <div class="id-stats">
+        <div class="id-stat"><b>3+</b><span>Core Services</span></div>
+        <div class="id-stat"><b>100%</b><span>Custom Built</span></div>
+        <div class="id-stat"><b>24-48h</b><span>Response Time</span></div>
+        <div class="id-stat"><b>PK</b><span>Based · Islamabad</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-photo">Profile photo placeholder</div>
+      <div class="about-text">
+        <span class="kicker">About Me</span>
+        <h2 style="color:var(--navy-deep); font-size:28px; margin-bottom:16px;">Passionate about building useful web products</h2>
+        <p>I am a Website and Browser Extension Developer with experience building modern websites, browser extensions, and AI-powered web applications. I'm always eager to learn new technologies, improve my skills, and deliver quality work.</p>
+        <p>My goal is to build innovative web products that solve real-world problems and provide an excellent user experience — for every client who hires me here.</p>
+        <div class="skill-tags">
+          <span>Website Design</span>
+          <span>Browser Extensions</span>
+          <span>App Development</span>
+          <span>HTML &amp; CSS</span>
+          <span>JavaScript</span>
+          <span>AI Tools</span>
+          <span>UI/UX Design</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Services</span>
+      <h2>Pick what you need, order in minutes</h2>
+      <p>Every service below can be ordered directly through the form — choose one, tell me your requirements, and pay securely.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="num">01</span>
+        <h3>Website Design &amp; Development</h3>
+        <p>Responsive, user-friendly websites built from scratch — business sites, portfolios, or landing pages.</p>
+        <div class="price-tag">From Rs. 8,000 <span>/ project</span></div>
+      </div>
+      <div class="service-card">
+        <span class="num">02</span>
+        <h3>Browser Extension Development</h3>
+        <p>Custom Chrome / Firefox extensions built and maintained for productivity and automation.</p>
+        <div class="price-tag">From Rs. 5,000 <span>/ extension</span></div>
+      </div>
+      <div class="service-card">
+        <span class="num">03</span>
+        <h3>App Development</h3>
+        <p>Simple, functional apps designed around what your users actually need.</p>
+        <div class="price-tag">From Rs. 10,000 <span>/ project</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="order-section seal-bg" id="order">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Hire / Order</span>
+      <h2>Place your order</h2>
+      <p>Fill in your details and send me a message — I'll reply on WhatsApp to discuss your project and price, and you can pay once we agree.</p>
+    </div>
+    <div class="order-grid">
+
+      <div class="receipt">
+        <div class="receipt-head">
+          <span>ORDER SLIP</span>
+          <span id="order-id">#HDS-0001</span>
+        </div>
+        <div class="receipt-body">
+          <form id="order-form">
+            <div class="field">
+              <label>Service</label>
+              <select id="service" required>
+                <option value="">Select a service</option>
+                <option value="Website Design & Development">Website Design &amp; Development</option>
+                <option value="Browser Extension Development">Browser Extension Development</option>
+                <option value="App Development">App Development</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Full Name</label>
+              <input type="text" id="cname" placeholder="Your name" required>
+            </div>
+            <div class="field">
+              <label>Phone / WhatsApp</label>
+              <input type="tel" id="cphone" placeholder="03XX-XXXXXXX" required>
+            </div>
+            <div class="field">
+              <label>Project Details</label>
+              <textarea id="cdetails" placeholder="Briefly describe what you need..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Send Message on WhatsApp</button>
+            <div class="confirm-box" id="confirm-box"></div>
+          </form>
+        </div>
+      </div>
+
+      <div class="order-notes">
+        <ul>
+          <li><span class="n">01</span><p>Fill the order slip with your service, name, and phone/WhatsApp number.</p></li>
+          <li><span class="n">02</span><p>Tap "Send Message on WhatsApp" — it opens a chat with your details already written in.</p></li>
+          <li><span class="n">03</span><p>I'll reply, ask a few questions about your project, and give you a price.</p></li>
+          <li><span class="n">04</span><p>Once we agree, you can pay via JazzCash, EasyPaisa, or uPaisa to <b>0308-8133888</b>, and I'll start work.</p></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap foot-grid">
+    <div class="brand">
+      <div class="badge-mark">HD</div>
+      <div class="brand-text">
+        <strong style="color:var(--paper);">Hamza Digital Shop</strong>
+        <span>Islamabad, Pakistan</span>
+      </div>
+    </div>
+    <div class="foot-contact">
+      <a href="tel:+923088133888">📞 0308-8133888</a>
+      <a href="mailto:hb1815358@gmail.com">✉ hb1815358@gmail.com</a>
+      <a href="https://wa.me/923088133888" target="_blank">💬 WhatsApp</a>
+    </div>
+  </div>
+  <div class="foot-bottom wrap">© 2026 Hamza Digital Shop. All rights reserved.</div>
+</footer>
+
+<script>
+  // Order ID generator
+  document.getElementById('order-id').textContent = '#HDS-' + Math.floor(1000 + Math.random()*9000);
+
+  // Form submit — opens WhatsApp with a prefilled message to the developer
+  document.getElementById('order-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    const service = document.getElementById('service').value;
+    const name = document.getElementById('cname').value;
+    const phone = document.getElementById('cphone').value;
+    const details = document.getElementById('cdetails').value;
+    const orderId = document.getElementById('order-id').textContent;
+
+    const message =
+      `Hello, I'd like to place an order (${orderId})\n` +
+      `Service: ${service}\n` +
+      `Name: ${name}\n` +
+      `Phone: ${phone}\n` +
+      `Details: ${details || '-'}`;
+
+    const whatsappUrl = `https://wa.me/923088133888?text=${encodeURIComponent(message)}`;
+
+    const box = document.getElementById('confirm-box');
+    box.classList.add('show');
+    box.innerHTML = `Thank you, <b>${name}</b>! Opening WhatsApp now — send the message so I get your number and details, then I'll reply to discuss your project and price.`;
+
+    window.open(whatsappUrl, '_blank');
+    this.reset();
+  });
+</script>
+
+</body>
+</html>
